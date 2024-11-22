@@ -21,6 +21,7 @@ const ClassSelection = ({ user, onClassSelected }) => {
                     displayName: user.displayName, // User's name
                     email: user.email, // User's email
                     class: className, // Selected class
+                    balance:500,
                 });
 
                 // Notify parent component that the class is selected

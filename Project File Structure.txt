@@ -19,7 +19,7 @@ class-participation-tcs/
 │   ├── pages/
 │   │   ├── HomePage.js       # Home page where users can access all features
 │   │   ├── LoginPage.js      # Login page (could be the GoogleLogin component itself)
-│   │   ├── ProfilePage.js    # User profile page to view balance and activities
+│   │   ├── Profile.js    # User profile page to view balance and activities
 │   │   ├── GenerateQRCodePage.js # Page for generating QR codes
 │   │   └── QRScannerPage.js  # Page for scanning QR codes
 │   ├── styles/
