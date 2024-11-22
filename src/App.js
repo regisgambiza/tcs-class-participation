@@ -1,79 +1,56 @@
-// src/App.js
+import React, { useState } from 'react'; // Import React and useState for state management
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'; // Import Firebase authentication functions
+import { auth } from './firebase'; // Import Firebase auth instance
+import ClassSelection from './components/ClassSelection'; // Import the ClassSelection component
 
-import React, { useState } from 'react';
-import { signInWithPopup } from 'firebase/auth'; // Firebase authentication
-import { GoogleAuthProvider } from 'firebase/auth'; // Google Auth provider
-import { setDoc, doc } from 'firebase/firestore'; // Firestore functions
-import { auth, firestore } from './firebase'; // Import auth and firestore from firebase.js
-
+// Main App component
 function App() {
-    const [user, setUser] = useState(null); // State to store user data
-    const [className, setClassName] = useState(''); // State to store selected class
-    const [isClassSelected, setIsClassSelected] = useState(false); // State to track if class is selected
+    const [user, setUser] = useState(null); // State to store the logged-in user
+    const [isClassSelected, setIsClassSelected] = useState(false); // State to track if the user has selected a class
+    const [selectedClass, setSelectedClass] = useState(''); // State to store the selected class
 
-    // Handle Google Sign-in
+    /**
+     * Handle user sign-in with Google
+     * - Opens a Google sign-in popup
+     * - Updates user state upon successful login
+     */
     const signInWithGoogle = async () => {
         try {
-            const provider = new GoogleAuthProvider(); // Initialize Google Auth provider
-            const result = await signInWithPopup(auth, provider); // Sign in with popup
-            const user = result.user; // Get user info from result
-            setUser(user); // Set user state
-            setIsClassSelected(false); // Reset class selection state
+            const provider = new GoogleAuthProvider(); // Create a Google Auth provider instance
+            const result = await signInWithPopup(auth, provider); // Show the sign-in popup and get the result
+            setUser(result.user); // Save the signed-in user to state
         } catch (error) {
-            console.error("Error during Google login:", error); // Log any errors
-        }
-    };
-
-    // Handle class selection after login
-    const handleClassSelection = async () => {
-        if (className) { // Check if className is not empty
-            try {
-                // Save user data (including selected class) to Firestore
-                await setDoc(doc(firestore, 'users', user.uid), {
-                    displayName: user.displayName, // Store display name
-                    email: user.email, // Store email
-                    class: className, // Store class selected
-                });
-
-                setIsClassSelected(true); // Mark class as selected
-            } catch (error) {
-                console.error("Error saving class information:", error); // Log any errors
-            }
-        } else {
-            alert("Please select a class."); // Alert if class is not selected
+            console.error("Error during Google login:", error); // Log any errors that occur during login
         }
     };
 
     return (
         <div>
+            {/* App Title */}
             <h1>Class Participation App</h1>
-            {/* Check if user is not logged in */}
+
+            {/* Render content based on user's state */}
             {!user ? (
-                <button onClick={signInWithGoogle}>Sign In with Google</button> // Show Google Sign In button
+                // If the user is not logged in, show the Google Sign-In button
+                <button onClick={signInWithGoogle}>Sign In with Google</button>
             ) : !isClassSelected ? (
-                // If user is logged in but has not selected a class
-                <div>
-                    <h2>Welcome, {user.displayName}!</h2>
-                    <p>Please select your class:</p>
-                    <select value={className} onChange={(e) => setClassName(e.target.value)}>
-                        {/* Dropdown for class selection */}
-                        <option value="">Select Class</option>
-                        <option value="Class 7A">Class 7A</option>
-                        <option value="Class 7B">Class 7B</option>
-                        <option value="Class 8A">Class 8A</option>
-                        <option value="Class 8B">Class 8B</option>
-                    </select>
-                    <button onClick={handleClassSelection}>Submit</button> {/* Submit button to save class */}
-                </div>
+                // If the user is logged in but hasn't selected a class, render the ClassSelection component
+                <ClassSelection
+                    user={user} // Pass the logged-in user to the component
+                    onClassSelected={(className) => {
+                        setIsClassSelected(true); // Mark class selection as completed
+                        setSelectedClass(className); // Save the selected class
+                    }}
+                />
             ) : (
-                // After class selection is done
+                // If the user has selected a class, show a thank-you message
                 <div>
                     <h2>Thank you for selecting your class!</h2>
-                    <p>Your class: {className}</p>
+                    <p>Your class: {selectedClass}</p>
                 </div>
             )}
         </div>
     );
 }
 
-export default App;
+export default App; // Export the App component for rendering
