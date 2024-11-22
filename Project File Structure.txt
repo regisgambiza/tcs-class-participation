@@ -1,0 +1,41 @@
+class-participation-tcs/
+├── public/
+│   ├── index.html            # Main HTML file
+│   ├── manifest.json         # PWA configuration (optional)
+│   ├── robots.txt            # For SEO (optional)
+│   └── favicon.ico           # App favicon
+├── src/
+│   ├── assets/
+│   │   └── qr-codes/         # Directory for storing generated QR codes (optional)
+│   ├── components/
+│   │   ├── GoogleLogin.js    # Google Login component
+│   │   ├── Profile.js        # User profile component
+│   │   ├── GenerateQRCode.js # QR code generation component
+│   │   ├── QRScanner.js      # QR code scanning component
+│   │   └── Navbar.js         # Navbar component (optional)
+│   ├── firebase/             # Firebase configuration and utilities
+│   │   ├── firebase.js       # Firebase initialization
+│   │   ├── firestoreService.js # Functions for Firestore CRUD operations (e.g., adding and retrieving QR strings)
+│   ├── pages/
+│   │   ├── HomePage.js       # Home page where users can access all features
+│   │   ├── LoginPage.js      # Login page (could be the GoogleLogin component itself)
+│   │   ├── ProfilePage.js    # User profile page to view balance and activities
+│   │   ├── GenerateQRCodePage.js # Page for generating QR codes
+│   │   └── QRScannerPage.js  # Page for scanning QR codes
+│   ├── styles/
+│   │   ├── App.css           # Global styles
+│   │   ├── GoogleLogin.css   # Specific styles for Google login
+│   │   ├── Profile.css       # Specific styles for profile
+│   │   ├── QRCode.css        # Specific styles for QR code generation and scanning
+│   │   └── Navbar.css        # Navbar styling
+│   ├── App.js                # Main React app component
+│   ├── index.js              # Entry point for React app
+│   └── App.css               # Global stylesheet for the React app
+├── .env                      # Environment variables (e.g., Firebase config keys)
+├── .gitignore                # Git ignore file
+├── firebase.json             # Firebase configuration for hosting and functions
+├── firestore.rules           # Firestore security rules
+├── firestore.indexes.json    # Firestore indexes configuration (optional for complex queries)
+├── package.json              # Dependencies and scripts
+├── package-lock.json         # Dependency lock file
+└── README.md                 # Project description and setup instructions
