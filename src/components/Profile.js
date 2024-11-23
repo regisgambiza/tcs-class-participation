@@ -98,7 +98,7 @@ function Profile({ user, selectedClass, balance }) {
         <h2 className="profile-header">Welcome, {user?.displayName || 'User'}!</h2>
         <p className="profile-info">Email: {user?.email}</p>
         <p className="profile-info">Class: {selectedClass}</p>
-        <p className="profile-balance">Balance: ${localBalance}</p> {/* Display updated balance from local state */}
+        <p className="profile-balance">Balance: {localBalance} Hello-Kitties</p> {/* Display updated balance from local state */}
 
         {/* QR scanner toggle button */}
         <button className="profile-button" onClick={() => setScanning(!scanning)}>

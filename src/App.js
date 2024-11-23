@@ -70,44 +70,51 @@ function App() {
     return (
     <Router>
         <div className="app-container">
-            <h1 className="app-title">Class Participation App</h1>
-            <Routes>
-                {/* Route for login */}
-                <Route
-                    path="/"
-                    element={
-                        !user ? (
-                            <button className="sign-in-button" onClick={signInWithGoogle}>
-                                Sign In with Google
-                            </button>
-                        ) : isClassSelected ? (
-                            <Navigate to="/profile" />
-                        ) : (
-                            <ClassSelection
-                                user={user}
-                                onClassSelected={(className) => {
-                                    setSelectedClass(className);
-                                    setIsClassSelected(true);
-                                }}
-                            />
-                        )
-                    }
-                />
-                {/* Route for Profile Page */}
-                <Route
-                    path="/profile"
-                    element={
-                        user && isClassSelected ? (
-                            <Profile user={user} selectedClass={selectedClass} balance={balance} />
-                        ) : (
-                            <Navigate to="/" />
-                        )
-                    }
-                />
-            </Routes>
+            <div className="app-body">
+                <h1 className="app-heading">Class Participation</h1>
+                <Routes>
+                    {/* Route for login */}
+                    <Route
+                        path="/"
+                        element={
+                            !user ? (
+                                <button className="sign-in-button" onClick={signInWithGoogle}>
+                                    Sign In with Google
+                                </button>
+                            ) : isClassSelected ? (
+                                <Navigate to="/profile" />
+                            ) : (
+                                <ClassSelection
+                                    user={user}
+                                    onClassSelected={(className) => {
+                                        setSelectedClass(className);
+                                        setIsClassSelected(true);
+                                    }}
+                                />
+                            )
+                        }
+                    />
+                    {/* Route for Profile Page */}
+                    <Route
+                        path="/profile"
+                        element={
+                            user && isClassSelected ? (
+                                <Profile user={user} selectedClass={selectedClass} balance={balance} />
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
+                </Routes>
+            </div>
+            {/* Footer */}
+            <footer className="app-footer">
+                © 2025, Powered by Regis Hello Kitty
+            </footer>
         </div>
     </Router>
 );
+
 }
 
 export default App;

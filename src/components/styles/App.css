@@ -1,13 +1,16 @@
 /* Main container for the app */
 .app-container {
     text-align: center;
-    padding: 20px;
     background-color: #f0f8ff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* Center items horizontally */
+    justify-content: flex-start;
+    /* Align items to the top */
+    padding-top: 40px;
+    /* Add space at the top of the page */
 }
 
 /* Title styling */
@@ -35,4 +38,64 @@
 
 .sign-in-button:active {
     transform: scale(0.98);
+}
+
+/* App Heading */
+.app-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #4a90e2;
+    /* Calming blue color */
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow for depth */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Add an emoji or icon for a playful touch */
+.app-heading::before {
+    content: '✨';
+    font-size: 1.5rem;
+    color: #f39c12;
+}
+
+.app-heading::after {
+    content: '✨';
+    font-size: 1.5rem;
+    color: #f39c12;
+}
+
+/* Footer styling */
+.app-footer {
+    margin-top: auto;
+    /* Push the footer to the bottom of the container */
+    text-align: center;
+    background-color: #4a90e2;
+    /* Matching or contrasting background color */
+    color: #fff;
+    /* Text color */
+    padding: 10px 0;
+    /* Vertical padding */
+    font-size: 0.9rem;
+    /* Smaller font size for footer */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    width: 100%;
+    /* Span full width of the page */
+}
+
+/* Body container to constrain app content */
+.app-body {
+    width: 100%;
+    max-width: 1200px;
+    /* Optional: Limit app body width for better visuals */
+    margin: 0 auto;
+    /* Center body within the container */
+    padding: 20px;
+    /* Add padding around content */
+    box-sizing: border-box;
 }
