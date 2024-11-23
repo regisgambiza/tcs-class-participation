@@ -1,6 +1,7 @@
 // src/components/QRScanner.js
 import React, { useState, useRef, useEffect } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
+import './styles/QRScanner.css';
 
 function QRScanner({ onScan, stopScanning }) {
     const videoRef = useRef(null);
@@ -32,12 +33,13 @@ function QRScanner({ onScan, stopScanning }) {
     }, [onScan, stopScanning]);
 
     return (
-        <div>
-            <h3>Scan QR Code</h3>
-            {errorMessage && <p>Error: {errorMessage}</p>}
-            <video ref={videoRef} width="100%" height="auto"></video>
-        </div>
-    );
+    <div className="qr-scanner-container">
+        <h3 className="qr-scanner-title">Scan QR Code</h3>
+        {errorMessage && <p className="qr-error-message">Error: {errorMessage}</p>}
+        <video ref={videoRef} className="qr-video" width="100%" height="auto"></video>
+    </div>
+);
+
 }
 
 export default QRScanner;

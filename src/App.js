@@ -5,6 +5,7 @@ import { auth, firestore } from './firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import ClassSelection from './components/ClassSelection';
 import Profile from './components/Profile'; // Import the Profile component
+import './components/styles/App.css';
 
 function App() {
     const [user, setUser] = useState(null); // State to store the logged-in user
@@ -67,42 +68,46 @@ function App() {
     };
 
     return (
-        <Router>
-            <div>
-                <h1>Class Participation App</h1>
-                <Routes>
-                    {/* Route for login */}
-                    <Route
-                        path="/"
-                        element={
-                            !user ? (
-                                <button onClick={signInWithGoogle}>Sign In with Google</button>
-                            ) : isClassSelected ? (
-                                <Navigate to="/profile" />
-                            ) : (
-                                <ClassSelection
-                                    user={user}
-                                    onClassSelected={(className) => {
-                                        setSelectedClass(className);
-                                        setIsClassSelected(true);
-                                    }}
-                                />
-                            )
-                        }
-                    />
-                    {/* Route for Profile Page */}
-                    <Route
-                        path="/profile"
-                        element={user && isClassSelected ? (
+    <Router>
+        <div className="app-container">
+            <h1 className="app-title">Class Participation App</h1>
+            <Routes>
+                {/* Route for login */}
+                <Route
+                    path="/"
+                    element={
+                        !user ? (
+                            <button className="sign-in-button" onClick={signInWithGoogle}>
+                                Sign In with Google
+                            </button>
+                        ) : isClassSelected ? (
+                            <Navigate to="/profile" />
+                        ) : (
+                            <ClassSelection
+                                user={user}
+                                onClassSelected={(className) => {
+                                    setSelectedClass(className);
+                                    setIsClassSelected(true);
+                                }}
+                            />
+                        )
+                    }
+                />
+                {/* Route for Profile Page */}
+                <Route
+                    path="/profile"
+                    element={
+                        user && isClassSelected ? (
                             <Profile user={user} selectedClass={selectedClass} balance={balance} />
                         ) : (
                             <Navigate to="/" />
-                        )}
-                    />
-                </Routes>
-            </div>
-        </Router>
-    );
+                        )
+                    }
+                />
+            </Routes>
+        </div>
+    </Router>
+);
 }
 
 export default App;

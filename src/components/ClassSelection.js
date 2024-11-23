@@ -1,6 +1,7 @@
 import React, { useState } from 'react'; // Import React and useState for managing state
 import { doc, setDoc } from 'firebase/firestore'; // Import Firestore functions for document creation
 import { firestore } from '../firebase'; // Import Firestore instance from the firebase configuration
+import './styles/ClassSelection.css';
 
 // Define the ClassSelection component
 const ClassSelection = ({ user, onClassSelected }) => {
@@ -36,27 +37,32 @@ const ClassSelection = ({ user, onClassSelected }) => {
     };
 
     // Render the class selection UI
-    return (
-        <div>
-            {/* Welcome message for the user */}
-            <h2>Welcome, {user.displayName}!</h2>
-            <p>Please select your class:</p>
+return (
+    <div className="class-selection-container">
+        {/* Welcome message for the user */}
+        <h2 className="welcome-message">Welcome, {user.displayName}!</h2>
+        <p className="instruction-text">Please select your class:</p>
 
-            {/* Dropdown menu for selecting a class */}
-            <select value={className} onChange={(e) => setClassName(e.target.value)}>
-                <option value="">Select Class</option>
-                {/* Default empty option */}
-                <option value="7/1">7/1</option>
-                <option value="7/2">7/2</option>
-                <option value="7/3">7/3</option>
-                <option value="8/1">8/1</option>
-                <option value="8/2">8/2</option>
-            </select>
+        {/* Dropdown menu for selecting a class */}
+        <select 
+            className="class-dropdown" 
+            value={className} 
+            onChange={(e) => setClassName(e.target.value)}
+        >
+            <option value="">Select Class</option>
+            {/* Default empty option */}
+            <option value="7/1">7/1</option>
+            <option value="7/2">7/2</option>
+            <option value="7/3">7/3</option>
+            <option value="8/1">8/1</option>
+            <option value="8/2">8/2</option>
+        </select>
 
-            {/* Button to submit the selected class */}
-            <button onClick={handleClassSelection}>Submit</button>
-        </div>
-    );
+        {/* Button to submit the selected class */}
+        <button className="submit-button" onClick={handleClassSelection}>Submit</button>
+    </div>
+);
+
 };
 
 export default ClassSelection; // Export the component for use in other parts of the app

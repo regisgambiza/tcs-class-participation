@@ -5,6 +5,7 @@ import { firestore } from '../firebase';  // Correct import for Firebase
 import { doc, getDoc, deleteDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';  // Import ZXing libraries
+import './styles/Profile.css';
 
 function Profile({ user, selectedClass, balance }) {
     const [scanning, setScanning] = useState(false);
@@ -93,39 +94,39 @@ function Profile({ user, selectedClass, balance }) {
     };
 
     return (
-        <div>
-            <h2>Welcome, {user?.displayName || 'User'}!</h2>
-            <p>Email: {user?.email}</p>
-            <p>Class: {selectedClass}</p>
-            <p>Balance: ${localBalance}</p> {/* Display updated balance from local state */}
+    <div className="profile-container">
+        <h2 className="profile-header">Welcome, {user?.displayName || 'User'}!</h2>
+        <p className="profile-info">Email: {user?.email}</p>
+        <p className="profile-info">Class: {selectedClass}</p>
+        <p className="profile-balance">Balance: ${localBalance}</p> {/* Display updated balance from local state */}
 
-            {/* QR scanner toggle button */}
-            <button onClick={() => setScanning(!scanning)}>
-                {scanning ? 'Stop Scanning' : 'Start Scanning QR Code'}
-            </button>
+        {/* QR scanner toggle button */}
+        <button className="profile-button" onClick={() => setScanning(!scanning)}>
+            {scanning ? 'Stop Scanning' : 'Start Scanning QR Code'}
+        </button>
 
-            {/* Show QR scanner when scanning is true */}
-            {scanning && <QRScanner onScan={handleScan} stopScanning={() => setScanning(false)} />}
+        {/* Show QR scanner when scanning is true */}
+        {scanning && <QRScanner onScan={handleScan} stopScanning={() => setScanning(false)} />}
 
-            {/* Option to scan QR code from image */}
-            <button
-                onClick={() => document.getElementById('uploadImage').click()}
+        {/* Option to scan QR code from image */}
+        <button
+            className="profile-button"
+            onClick={() => document.getElementById('uploadImage').click()}
+        >
+            Scan QR Code from Image
+        </button>
+        <input
+            type="file"
+            accept="image/*"
+            className="profile-upload"
+            style={{ display: 'none' }}
+            onChange={handleImageUpload}
+            id="uploadImage"
+        />
 
-            >
-                Scan QR Code from Image
-            </button>
-            <input
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={handleImageUpload}
-                id="uploadImage"
-            />
-
-            {/* Display message */}
-            {message && <p>{message}</p>}
-        </div>
-    );
-}
+        {/* Display message */}
+        {message && <p className="profile-message">{message}</p>}
+    </div>
+);}
 
 export default Profile;
