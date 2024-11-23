@@ -56,3 +56,78 @@
     color: #e74c3c;
     font-size: 14px;
 }
+
+/* Profile container styling */
+.profile-container {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Profile picture styling */
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Additional styles for other profile details */
+.profile-container h2 {
+    font-size: 1.8rem;
+    color: #4a90e2;
+    margin-bottom: 10px;
+}
+
+.profile-container p {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 5px 0;
+}
+
+/* Leaderboard Container */
+.leaderboard-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    /* Light gray background */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+    text-align: left;
+}
+
+/* Leaderboard Title */
+.leaderboard-container h3 {
+    margin-bottom: 10px;
+    color: #4a90e2;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* Leaderboard List */
+.leaderboard-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* Individual List Items */
+.leaderboard-item {
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Crown Icon */
+.crown-icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
+    color: gold;
+}

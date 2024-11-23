@@ -1,11 +1,23 @@
-// src/components/Profile.js
-import React, { useState } from 'react';
-import QRScanner from './QRScanner';  // Correct import for QRScanner
-import { firestore } from '../firebase';  // Correct import for Firebase
-import { doc, getDoc, deleteDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
-import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';  // Import ZXing libraries
-import './styles/Profile.css';
+import React, { useEffect, useState } from 'react'; // React and necessary hooks
+import QRScanner from './QRScanner'; // QRScanner component
+import { firestore } from '../firebase'; // Firebase Firestore instance
+import { 
+    doc, 
+    getDoc, 
+    deleteDoc, 
+    updateDoc, 
+    collection, 
+    query, 
+    where, 
+    getDocs, 
+    orderBy, 
+    limit 
+} from 'firebase/firestore'; // Firestore utilities
+import { useNavigate } from 'react-router-dom'; // For navigation
+import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library'; // ZXing for QR code scanning
+import './styles/Profile.css'; // Profile component-specific CSS
+
+
 
 function Profile({ user, selectedClass, balance }) {
     const [scanning, setScanning] = useState(false);
@@ -13,6 +25,8 @@ function Profile({ user, selectedClass, balance }) {
     const [file, setFile] = useState(null);
     const [localBalance, setLocalBalance] = useState(balance);  // Local balance state
     const navigate = useNavigate();
+    const [leaderboard, setLeaderboard] = useState([]);
+
 
     // Handle QR scan result from QRScanner component
     const handleScan = async (qrCodeId) => {
@@ -93,13 +107,58 @@ function Profile({ user, selectedClass, balance }) {
         }
     };
 
+    useEffect(() => {
+    const fetchLeaderboard = async () => {
+        if (!selectedClass) {
+            console.error('No class selected for the leaderboard.');
+            return;
+        }
+
+        try {
+            const leaderboardQuery = query(
+                collection(firestore, 'users'),
+                where('class', '==', selectedClass), // Filter by the selected class
+                orderBy('balance', 'desc'),
+                limit(5)
+            );
+
+            const querySnapshot = await getDocs(leaderboardQuery);
+            const leaderboardData = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setLeaderboard(leaderboardData);
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
+        }
+    };
+
+    fetchLeaderboard();
+}, [selectedClass]); // Re-fetch leaderboard if the selected class changes
+
+
     return (
     <div className="profile-container">
         <h2 className="profile-header">Welcome, {user?.displayName || 'User'}!</h2>
         <p className="profile-info">Email: {user?.email}</p>
         <p className="profile-info">Class: {selectedClass}</p>
         <p className="profile-balance">Balance: {localBalance} Hello-Kitties</p> {/* Display updated balance from local state */}
-
+        {/* Leaderboard Section */}
+            <div className="leaderboard-container">
+                <h3>Leaderboard</h3>
+                <ul className="leaderboard-list">
+                    {leaderboard.map((learner, index) => (
+                        <li key={learner.id} className="leaderboard-item">
+                            {index === 0 && (
+                                <span className="crown-icon" role="img" aria-label="crown">
+                                    👑
+                                </span>
+                            )}
+                            {learner.displayName || "Anonymous User"} - {learner.balance} HK
+                        </li>
+                    ))}
+                </ul>
+            </div>
         {/* QR scanner toggle button */}
         <button className="profile-button" onClick={() => setScanning(!scanning)}>
             {scanning ? 'Stop Scanning' : 'Start Scanning QR Code'}

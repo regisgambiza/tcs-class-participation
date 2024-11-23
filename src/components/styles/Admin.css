@@ -1,0 +1,81 @@
+/* Admin Dashboard Styles */
+.admin-dashboard {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.admin-header h1 {
+    font-size: 24px;
+}
+
+.logout-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background-color: #d32f2f;
+}
+
+.admin-content {
+    margin-top: 30px;
+    background-color: #f4f4f4;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.admin-content h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.admin-content p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.action-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .admin-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+}
