@@ -21,7 +21,7 @@ const ClassSelection = ({ user, onClassSelected }) => {
                     displayName: user.displayName, // User's name
                     email: user.email, // User's email
                     class: className, // Selected class
-                    balance:500,
+                    balance:0,
                 });
 
                 // Notify parent component that the class is selected
@@ -44,11 +44,13 @@ const ClassSelection = ({ user, onClassSelected }) => {
 
             {/* Dropdown menu for selecting a class */}
             <select value={className} onChange={(e) => setClassName(e.target.value)}>
-                <option value="">Select Class</option> {/* Default empty option */}
-                <option value="Class 7A">Class 7A</option>
-                <option value="Class 7B">Class 7B</option>
-                <option value="Class 8A">Class 8A</option>
-                <option value="Class 8B">Class 8B</option>
+                <option value="">Select Class</option>
+                {/* Default empty option */}
+                <option value="7/1">7/1</option>
+                <option value="7/2">7/2</option>
+                <option value="7/3">7/3</option>
+                <option value="8/1">8/1</option>
+                <option value="8/2">8/2</option>
             </select>
 
             {/* Button to submit the selected class */}

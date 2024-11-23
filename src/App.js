@@ -58,7 +58,7 @@ function App() {
                     displayName: loggedInUser.displayName,
                     email: loggedInUser.email,
                     class: '', // Initially no class selected
-                    balance: 500, // Default balance
+                    balance: 0, // Default balance
                 });
             }
         } catch (error) {

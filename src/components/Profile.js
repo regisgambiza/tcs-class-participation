@@ -26,7 +26,7 @@ function Profile({ user, selectedClass, balance }) {
                 const qrCodeDoc = querySnapshot.docs[0];
                 const qrCodeData = qrCodeDoc.data();
                 console.log('QR Code data:', qrCodeData);  // Debug log to check QR code data
-                const amount = qrCodeData.amount;
+                const amount = Number(qrCodeData.amount); // Ensure amount is a number
 
                 // Update user's balance
                 const userRef = doc(firestore, 'users', user.uid);
@@ -35,14 +35,15 @@ function Profile({ user, selectedClass, balance }) {
                 if (userSnap.exists()) {
                     const userData = userSnap.data();
                     console.log('User data:', userData);  // Debug log to check user data
-                    const newBalance = userData.balance + amount;
+                    const currentBalance = Number(userData.balance) || 0; // Ensure balance is a number
+                    const newBalance = currentBalance + amount;
 
                     await updateDoc(userRef, { balance: newBalance });
                     await deleteDoc(qrCodeDoc.ref); // Delete QR code after successful use
 
                     // Update local balance immediately
                     setLocalBalance(newBalance);  // Update the local balance state
-                    setMessage('Balance successfully added!');
+                    setMessage('Balance successfully updated!');
                     setScanning(false);
                     navigate('/profile');
                 } else {
@@ -56,6 +57,7 @@ function Profile({ user, selectedClass, balance }) {
             setMessage('Error processing QR code.');
         }
     };
+
 
     // Handle QR code scan from image
     const handleImageUpload = async (event) => {
