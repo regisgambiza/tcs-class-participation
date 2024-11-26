@@ -6,6 +6,9 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import ClassSelection from './components/ClassSelection';
 import Profile from './components/Profile'; // Import the Profile component
 import './components/styles/App.css';
+import Shop from './components/Shop'; // Import Shop component
+import { Link } from 'react-router-dom';
+
 
 function App() {
     const [user, setUser] = useState(null); // State to store the logged-in user
@@ -70,7 +73,20 @@ function App() {
     return (
     <Router>
         <div className="app-container">
-            <div className="app-body">
+            {user && isClassSelected && (
+                <nav className="navbar">
+                    <ul>
+                        <li>
+                            <Link to="/profile">Home</Link>
+                        </li>
+                        <li>
+                            <Link to="/shop">Shop</Link>
+                        </li>
+                    </ul>
+                </nav>
+            )}
+    <div className="app-body">
+
                 <h1 className="app-heading">Class Participation</h1>
                 <Routes>
                     {/* Route for login */}
@@ -100,6 +116,16 @@ function App() {
                         element={
                             user && isClassSelected ? (
                                 <Profile user={user} selectedClass={selectedClass} balance={balance} />
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/shop"
+                        element={
+                            user && isClassSelected ? (
+                                <Shop user={user} balance={balance} />
                             ) : (
                                 <Navigate to="/" />
                             )

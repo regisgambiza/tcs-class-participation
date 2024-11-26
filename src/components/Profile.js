@@ -143,22 +143,26 @@ function Profile({ user, selectedClass, balance }) {
         <p className="profile-info">Email: {user?.email}</p>
         <p className="profile-info">Class: {selectedClass}</p>
         <p className="profile-balance">Balance: {localBalance} Hello-Kitties</p> {/* Display updated balance from local state */}
+        
         {/* Leaderboard Section */}
-            <div className="leaderboard-container">
-                <h3>Leaderboard</h3>
-                <ul className="leaderboard-list">
-                    {leaderboard.map((learner, index) => (
-                        <li key={learner.id} className="leaderboard-item">
-                            {index === 0 && (
-                                <span className="crown-icon" role="img" aria-label="crown">
-                                    👑
-                                </span>
-                            )}
-                            {learner.displayName || "Anonymous User"} - {learner.balance} HK
-                        </li>
-                    ))}
-                </ul>
-            </div>
+    <div className="leaderboard-container">
+        <h3>Leaderboard</h3>
+        <ul className="leaderboard-list">
+            {leaderboard.map((learner, index) => (
+                <li key={learner.id} className="leaderboard-item">
+                    {index === 0 && (
+                        <span className="crown-icon" role="img" aria-label="crown">
+                            👑
+                        </span>
+                    )}
+                    <span className="learner-name">{learner.displayName || "Anonymous User"}</span> - 
+                    <span className="learner-balance">{learner.balance} HK</span>
+                </li>
+            ))}
+        </ul>
+    </div>
+
+
         {/* QR scanner toggle button */}
         <button className="profile-button" onClick={() => setScanning(!scanning)}>
             {scanning ? 'Stop Scanning' : 'Start Scanning QR Code'}
