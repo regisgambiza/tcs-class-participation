@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import updateUserBalance from "../utilities/updateUserBalance";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import fetchUserBalance from "../utilities/fetchUserBalance"; // Adjust path as necessary
+import { authenticateWithBiometrics } from "../utilities/biometricAuth"; // Import the biometric authentication function
+
 
 const Shop = ({user}) => {
     const [userBalance, setUserBalance] = useState(0);
@@ -61,6 +63,21 @@ const Shop = ({user}) => {
 
     const handlePurchase = async (item) => {
         try {
+            // Confirm the purchase
+            const isConfirmed = window.confirm(`Are you sure you want to purchase ${item.name} for ${item.price} kitties?`);
+            if (!isConfirmed) {
+                console.log("Purchase canceled by user.");
+                return; // Exit the function if the user cancels
+            }
+
+            // Perform biometric authentication
+            const isAuthenticated = await authenticateWithBiometrics();
+            if (!isAuthenticated) {
+                alert("Biometric authentication failed. Purchase canceled.");
+                return;
+            }
+
+            console.log("Biometric authentication successful.");
 
             // Fetch user balance
             if (userBalance >= item.price) {
