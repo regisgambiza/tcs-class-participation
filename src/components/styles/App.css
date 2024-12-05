@@ -20,7 +20,7 @@
     margin-bottom: 20px;
 }
 
-/* Sign-in button styling */
+/* Sign-in button styling
 .sign-in-button {
     padding: 10px 20px;
     font-size: 1rem;
@@ -39,6 +39,7 @@
 .sign-in-button:active {
     transform: scale(0.98);
 }
+*/
 
 /* App Heading */
 .app-heading {

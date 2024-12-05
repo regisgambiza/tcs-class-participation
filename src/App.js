@@ -10,6 +10,9 @@ import './components/styles/App.css'; // CSS file for styling the app
 import Shop from './components/Shop'; // Component for the shop functionality
 import { Link } from 'react-router-dom';
 import Purchases from "./components/Purchases"; // Link component for navigation
+import './components/styles/SignInPage.css';
+import SignInPage from "./components/SignInPage";
+
 
 // Main App component
 function App() {
@@ -99,18 +102,16 @@ function App() {
                         <Route
                             path="/"
                             element={
-                                !user ? ( // If no user is logged in
-                                    <button className="sign-in-button" onClick={signInWithGoogle}>
-                                        Sign In with Google
-                                    </button> // Show Google sign-in button
-                                ) : isClassSelected ? ( // If user is logged in and class is selected
-                                    <Navigate to="/profile" /> // Redirect to profile page
+                                !user ? (
+                                    <SignInPage signInWithGoogle={signInWithGoogle} />
+                                ) : isClassSelected ? (
+                                    <Navigate to="/profile" />
                                 ) : (
                                     <ClassSelection
                                         user={user}
                                         onClassSelected={(className) => {
-                                            setSelectedClass(className); // Update selected class
-                                            setIsClassSelected(true); // Mark class as selected
+                                            setSelectedClass(className);
+                                            setIsClassSelected(true);
                                         }}
                                     />
                                 )
