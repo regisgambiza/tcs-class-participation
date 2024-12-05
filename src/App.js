@@ -17,7 +17,6 @@ function App() {
     const [isClassSelected, setIsClassSelected] = useState(false); // Tracks if the user has selected a class
     const [selectedClass, setSelectedClass] = useState(''); // Stores the selected class name
     const [balance, setBalance] = useState(0); // Stores the user's balance
-    const my_user_id = " "; // Temporary variable for user ID (not managed with state)
 
     // Effect hook to fetch user data from Firestore after login
     useEffect(() => {

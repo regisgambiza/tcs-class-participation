@@ -3,24 +3,24 @@ import './styles/Shop.css'; // Add styling for the shop
 import { useState, useEffect } from "react";
 import updateUserBalance from "../utilities/updateUserBalance";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import fetchUserBalance from "../utilities/fetchUserBalance"; // Adjust path as necessary
 
 const Shop = ({user, balance}) => {
     const [userBalance, setUserBalance] = useState(0);
     const navigate = useNavigate(); // Initialize navigate
 
     useEffect(() => {
-        const loadBalance = async () => {
+        const loadUserBalance = async () => {
             try {
+                const balance = await fetchUserBalance(user.uid);
                 setUserBalance(balance);
             } catch (error) {
                 console.error("Failed to load user balance:", error);
             }
         };
 
-        console.log("Imported userUid", user.uid);
-
-        loadBalance();
-    }, [balance, user.uid]);
+        loadUserBalance();
+    }, [user.uid]);
 
     const shopItems = [
         {
