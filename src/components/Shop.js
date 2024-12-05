@@ -5,7 +5,7 @@ import updateUserBalance from "../utilities/updateUserBalance";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import fetchUserBalance from "../utilities/fetchUserBalance"; // Adjust path as necessary
 
-const Shop = ({user, balance}) => {
+const Shop = ({user}) => {
     const [userBalance, setUserBalance] = useState(0);
     const navigate = useNavigate(); // Initialize navigate
 

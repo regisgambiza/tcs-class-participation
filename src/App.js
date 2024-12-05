@@ -127,7 +127,7 @@ function App() {
                             path="/shop"
                             element={
                                 user && isClassSelected ? ( // If user is logged in and class is selected
-                                    <Shop user={user} balance={balance}/>
+                                    <Shop user={user}/>
                                 ) : (
                                     <Navigate to="/" /> // Redirect to home if not
                                 )
