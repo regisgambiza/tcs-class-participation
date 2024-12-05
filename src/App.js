@@ -8,7 +8,8 @@ import ClassSelection from './components/ClassSelection'; // Component for selec
 import Profile from './components/Profile'; // Component for user profile
 import './components/styles/App.css'; // CSS file for styling the app
 import Shop from './components/Shop'; // Component for the shop functionality
-import { Link } from 'react-router-dom'; // Link component for navigation
+import { Link } from 'react-router-dom';
+import Purchases from "./components/Purchases"; // Link component for navigation
 
 // Main App component
 function App() {
@@ -87,11 +88,13 @@ function App() {
                             <li>
                                 <Link to="/shop">Shop</Link> {/* Link to shop page */}
                             </li>
+                            <li>
+                                <Link to="/purchases">Purchases</Link> {/* Link to shop page */}
+                            </li>
                         </ul>
                     </nav>
                 )}
                 <div className="app-body"> {/* Main content area */}
-                    <h1 className="app-heading">Class Participation</h1> {/* Page heading */}
                     <Routes> {/* Define routes for the application */}
                         <Route
                             path="/"
@@ -133,6 +136,11 @@ function App() {
                                 )
                             }
                         />
+                        <Route
+                            path="/purchases"
+                            element={user ? <Purchases userId={user.uid} /> : <Navigate to="/login" />}
+                        />
+
                     </Routes>
                 </div>
                 {/* Footer section */}

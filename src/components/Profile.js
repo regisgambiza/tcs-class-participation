@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react'; // React and necessary hooks
 import QRScanner from './QRScanner'; // QRScanner component
 import { firestore } from '../firebase'; // Firebase Firestore instance
-import {
-    doc,
-    getDoc,
-    deleteDoc,
-    updateDoc,
-    collection,
-    query,
-    where,
-    getDocs,
-    orderBy,
-    limit
-} from 'firebase/firestore'; // Firestore utilities
+import {doc, getDoc, deleteDoc, updateDoc, collection, query, where, getDocs, orderBy, limit} from 'firebase/firestore'; // Firestore utilities
 import { useNavigate } from 'react-router-dom'; // For navigation
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library'; // ZXing for QR code scanning
 import './styles/Profile.css'; // Profile component-specific CSS

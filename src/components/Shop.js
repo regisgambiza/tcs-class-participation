@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import updateUserBalance from "../utilities/updateUserBalance";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import fetchUserBalance from "../utilities/fetchUserBalance"; // Adjust path as necessary
-import { authenticateWithBiometrics } from "../utilities/biometricAuth"; // Import the biometric authentication function
+import { authenticateWithBiometrics } from "../utilities/biometricAuth";
+import addPurchase from "../utilities/addPurchase"; // Import the biometric authentication function
 
 
 const Shop = ({user}) => {
@@ -70,6 +71,7 @@ const Shop = ({user}) => {
                 return; // Exit the function if the user cancels
             }
 
+            /*
             // Perform biometric authentication
             const isAuthenticated = await authenticateWithBiometrics();
             if (!isAuthenticated) {
@@ -77,7 +79,8 @@ const Shop = ({user}) => {
                 return;
             }
 
-            console.log("Biometric authentication successful.");
+            console.log("Biometric authentication successful.")
+             */
 
             // Fetch user balance
             if (userBalance >= item.price) {
@@ -89,10 +92,15 @@ const Shop = ({user}) => {
 
                 setUserBalance(newBalance); // Update local state after successful Firestore update
 
+                await addPurchase(user.uid, item.name, item.price);
+
                 alert(`You purchased ${item.name}! Your new balance is ${newBalance}.`);
 
                 // OPTIONAL: Redirect to the Profile page to refresh the data
-                navigate('/profile'); // Assuming you're using React Router's `useNavigate`
+                //navigate('/profile'); // Assuming you're using React Router's `useNavigate`
+                navigate('/purchases'); // Assuming you're using React Router's `useNavigate`
+
+
             } else {
                 alert("You do not have enough Kitties to purchase this item.");
             }
@@ -104,7 +112,6 @@ const Shop = ({user}) => {
 
     return (
         <div className="shop-container">
-            <h2 className="shop-heading">Shop</h2>
             <h2 className="shop-heading">Your balance is: {userBalance} kitties</h2>
             <div className="shop-items">
                 {shopItems.map((item) => (
