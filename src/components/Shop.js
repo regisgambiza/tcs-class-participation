@@ -30,37 +30,78 @@ const Shop = ({user}) => {
             id: 1,
             name: "Test Resit Pass",
             description: "Resit a test attempt.",
-            price: 800,
+            price: 2000, // Requires 40 actions
         },
         {
             id: 2,
             name: "3 Points Booster",
             description: "Boost your test score by 3 points.",
-            price: 500,
+            price: 1500, // Requires 30 actions
         },
         {
             id: 3,
             name: "Phone Privileges (1 Day)",
-            description: "Use your phone for a whole day.",
-            price: 200,
+            description: "Use your phone for a whole lesson.",
+            price: 1000, // Requires 20 actions
+        },
+
+        {
+            id: 5,
+            name: "Test Partner Pass",
+            price: 1500, // Requires 24 actions
+            description: "Get to choose a partner to sit with you during your next test.",
+        },
+
+        {
+            id: 7,
+            name: "Skip a Test (1 Assignment)",
+            price: 5000, // Requires 50 actions
+            description: "A coveted reward to skip one test!",
         },
         {
-            name: 'Personalized Greeting Animation',
-            price: 550,
-            description: 'Unlock a personalized greeting animation on your profile page.',
+            id: 8,
+            name: "Get Hints for Tests",
+            price: 1500, // Requires 30 actions
+            description: "Receive small hints for upcoming quizzes.",
         },
         {
-            name: 'Test Partner Pass',
-            price: 400,
-            description: 'Get to choose a partner to sit with you during your next test.',
+            id: 9,
+            name: "Extra Credit Opportunity",
+            price: 3000, // Requires 60 actions
+            description: "A one-time chance to boost your grades.",
         },
         {
-            name: 'Mystery Box Reward',
-            price: 800, // Starting price
-            description: 'Buy a Mystery Box and get a random surprise! (Value may vary)',
-            isVariable: true, // Indicates that the price can vary
+            id: 10,
+            name: "Test Retry with Hints",
+            price: 2500, // Requires 50 actions
+            description: "Retry a test with added help.",
+        },
+        {
+            id: 11,
+            name: "Snack Pass",
+            price: 800, // Requires 16 actions
+            description: "Bring extra snacks to class.",
+        },
+        {
+            id: 12,
+            name: "Assignment Grading Priority",
+            price: 1200, // Requires 24 actions
+            description: "Get your assignment graded before others!",
+        },
+        {
+            id: 13,
+            name: "Redo Test Questions You Missed",
+            price: 1800, // Requires 36 actions
+            description: "A chance to redo the questions you got wrong.",
+        },
+        {
+            id: 14,
+            name: "Funny Hat for the Teacher",
+            price: 1000, // Requires 20 actions
+            description: "Make the teacher wear a funny hat for the day!",
         },
     ];
+
 
     const handlePurchase = async (item) => {
         try {

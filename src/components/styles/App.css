@@ -40,7 +40,6 @@
     transform: scale(0.98);
 }
 */
-
 /* App Heading */
 .app-heading {
     font-size: 2.5rem;
@@ -101,6 +100,8 @@
     box-sizing: border-box;
 }
 
+
+/* Navigation bar css */
 .navbar {
     background-color: #4a90e2;
     padding: 10px;
@@ -108,6 +109,9 @@
     justify-content: space-around;
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky; /* Ensures the navbar sticks to the top */
+    top: 0; /* Anchors the navbar to the top of the viewport */
+    z-index: 1000; /* Keeps it above other content */
 }
 
 .navbar ul {
