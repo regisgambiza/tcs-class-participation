@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'; // React and necessary hooks
 import QRScanner from './QRScanner'; // QRScanner component
 import { firestore } from '../firebase'; // Firebase Firestore instance
-import { 
-    doc, 
-    getDoc, 
-    deleteDoc, 
-    updateDoc, 
-    collection, 
-    query, 
-    where, 
-    getDocs, 
-    orderBy, 
-    limit 
+import {
+    doc,
+    getDoc,
+    deleteDoc,
+    updateDoc,
+    collection,
+    query,
+    where,
+    getDocs,
+    orderBy,
+    limit
 } from 'firebase/firestore'; // Firestore utilities
 import { useNavigate } from 'react-router-dom'; // For navigation
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library'; // ZXing for QR code scanning
@@ -26,6 +26,30 @@ function Profile({ user, selectedClass, balance }) {
     const [localBalance, setLocalBalance] = useState(balance);  // Local balance state
     const navigate = useNavigate();
     const [leaderboard, setLeaderboard] = useState([]);
+
+    // Inside Profile.js
+
+    useEffect(() => {
+        // Function to fetch the latest balance
+        const fetchBalance = async () => {
+            try {
+                const userRef = doc(firestore, 'users', user.uid); // Reference to user's document
+                const userSnap = await getDoc(userRef); // Fetch the document
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data(); // Get user data
+                    setLocalBalance(userData.balance || 0); // Update the local balance state
+                } else {
+                    console.error('User document not found.');
+                }
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+            }
+        };
+
+        fetchBalance(); // Fetch balance when the component mounts
+    }, [user]); // Dependency array ensures it runs when `user` changes
+
 
 
     // Handle QR scan result from QRScanner component
@@ -108,33 +132,33 @@ function Profile({ user, selectedClass, balance }) {
     };
 
     useEffect(() => {
-    const fetchLeaderboard = async () => {
-        if (!selectedClass) {
-            console.error('No class selected for the leaderboard.');
-            return;
-        }
+        const fetchLeaderboard = async () => {
+            if (!selectedClass) {
+                console.error('No class selected for the leaderboard.');
+                return;
+            }
 
-        try {
-            const leaderboardQuery = query(
-                collection(firestore, 'users'),
-                where('class', '==', selectedClass), // Filter by the selected class
-                orderBy('balance', 'desc'),
-                limit(5)
-            );
+            try {
+                const leaderboardQuery = query(
+                    collection(firestore, 'users'),
+                    where('class', '==', selectedClass), // Filter by the selected class
+                    orderBy('balance', 'desc'),
+                    limit(5)
+                );
 
-            const querySnapshot = await getDocs(leaderboardQuery);
-            const leaderboardData = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            setLeaderboard(leaderboardData);
-        } catch (error) {
-            console.error('Error fetching leaderboard:', error);
-        }
-    };
+                const querySnapshot = await getDocs(leaderboardQuery);
+                const leaderboardData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setLeaderboard(leaderboardData);
+            } catch (error) {
+                console.error('Error fetching leaderboard:', error);
+            }
+        };
 
-    fetchLeaderboard();
-}, [selectedClass]); // Re-fetch leaderboard if the selected class changes
+        fetchLeaderboard();
+    }, [selectedClass]); // Re-fetch leaderboard if the selected class changes
 
 
     return (
@@ -143,7 +167,7 @@ function Profile({ user, selectedClass, balance }) {
         <p className="profile-info">Email: {user?.email}</p>
         <p className="profile-info">Class: {selectedClass}</p>
         <p className="profile-balance">Balance: {localBalance} Hello-Kitties</p> {/* Display updated balance from local state */}
-        
+
         {/* Leaderboard Section */}
     <div className="leaderboard-container">
         <h3>Leaderboard</h3>
@@ -155,7 +179,7 @@ function Profile({ user, selectedClass, balance }) {
                             👑
                         </span>
                     )}
-                    <span className="learner-name">{learner.displayName || "Anonymous User"}</span> - 
+                    <span className="learner-name">{learner.displayName || "Anonymous User"}</span> -
                     <span className="learner-balance">{learner.balance} HK</span>
                 </li>
             ))}

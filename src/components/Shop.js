@@ -1,7 +1,27 @@
 import React from 'react';
 import './styles/Shop.css'; // Add styling for the shop
+import { useState, useEffect } from "react";
+import updateUserBalance from "../utilities/updateUserBalance";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const Shop = ({ userBalance }) => {
+const Shop = ({user, balance}) => {
+    const [userBalance, setUserBalance] = useState(0);
+    const navigate = useNavigate(); // Initialize navigate
+
+    useEffect(() => {
+        const loadBalance = async () => {
+            try {
+                setUserBalance(balance);
+            } catch (error) {
+                console.error("Failed to load user balance:", error);
+            }
+        };
+
+        console.log("Imported userUid", user.uid);
+
+        loadBalance();
+    }, [balance, user.uid]);
+
     const shopItems = [
         {
             id: 1,
@@ -39,18 +59,36 @@ const Shop = ({ userBalance }) => {
         },
     ];
 
-    const handlePurchase = (item) => {
-        if (userBalance >= item.price) {
-            alert(`You purchased ${item.name}!`);
-            // Logic for deducting kitties can be added here
-        } else {
-            alert("You do not have enough Kitties to purchase this item.");
+    const handlePurchase = async (item) => {
+        try {
+
+            // Fetch user balance
+            if (userBalance >= item.price) {
+                const newBalance = userBalance - item.price;
+                console.log("New balance after purchase:", newBalance);
+
+                // Update Firestore with the new balance
+                await updateUserBalance(user.uid, newBalance);
+
+                setUserBalance(newBalance); // Update local state after successful Firestore update
+
+                alert(`You purchased ${item.name}! Your new balance is ${newBalance}.`);
+
+                // OPTIONAL: Redirect to the Profile page to refresh the data
+                navigate('/profile'); // Assuming you're using React Router's `useNavigate`
+            } else {
+                alert("You do not have enough Kitties to purchase this item.");
+            }
+        } catch (error) {
+            console.error("Error during purchase:", error);
+            alert("An error occurred while processing your purchase. Please try again.");
         }
     };
 
     return (
         <div className="shop-container">
             <h2 className="shop-heading">Shop</h2>
+            <h2 className="shop-heading">Your balance is: {userBalance} kitties</h2>
             <div className="shop-items">
                 {shopItems.map((item) => (
                     <div key={item.id} className="shop-card">

@@ -1,146 +1,149 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth, firestore } from './firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import ClassSelection from './components/ClassSelection';
-import Profile from './components/Profile'; // Import the Profile component
-import './components/styles/App.css';
-import Shop from './components/Shop'; // Import Shop component
-import { Link } from 'react-router-dom';
+// Importing necessary libraries and components
+import React, { useState, useEffect } from 'react'; // React library for building UI and React hooks
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; // React Router components for navigation
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'; // Firebase authentication methods
+import { auth, firestore } from './firebase'; // Importing Firebase auth and Firestore configuration
+import { doc, getDoc, setDoc } from 'firebase/firestore'; // Firestore methods to interact with the database
+import ClassSelection from './components/ClassSelection'; // Component for selecting class
+import Profile from './components/Profile'; // Component for user profile
+import './components/styles/App.css'; // CSS file for styling the app
+import Shop from './components/Shop'; // Component for the shop functionality
+import { Link } from 'react-router-dom'; // Link component for navigation
 
-
+// Main App component
 function App() {
-    const [user, setUser] = useState(null); // State to store the logged-in user
-    const [isClassSelected, setIsClassSelected] = useState(false); // State to track if the user has selected a class
-    const [selectedClass, setSelectedClass] = useState(''); // State to store the selected class
-    const [balance, setBalance] = useState(0); // State to store the user's balance
+    // State hooks to manage application state
+    const [user, setUser] = useState(null); // State to store the currently logged-in user
+    const [isClassSelected, setIsClassSelected] = useState(false); // Tracks if the user has selected a class
+    const [selectedClass, setSelectedClass] = useState(''); // Stores the selected class name
+    const [balance, setBalance] = useState(0); // Stores the user's balance
+    const my_user_id = " "; // Temporary variable for user ID (not managed with state)
 
-    // Effect to fetch user data from Firestore after login
+    // Effect hook to fetch user data from Firestore after login
     useEffect(() => {
-        if (user) {
+        if (user) { // If a user is logged in
+            console.log(user);
             const fetchUserData = async () => {
-                const userDocRef = doc(firestore, 'users', user.uid);
-                const userDocSnap = await getDoc(userDocRef);
+                const userDocRef = doc(firestore, 'users', user.uid); // Reference to the user's document in Firestore
+                const userDocSnap = await getDoc(userDocRef); // Retrieve the document snapshot
 
-                if (userDocSnap.exists()) {
-                    const userData = userDocSnap.data();
-                    if (userData.class) {
-                        setSelectedClass(userData.class);
-                        setIsClassSelected(true);
+                if (userDocSnap.exists()) { // Check if the document exists
+                    const userData = userDocSnap.data(); // Retrieve data from the document
+                    if (userData.class) { // If the user has a class assigned
+                        setSelectedClass(userData.class); // Update selected class state
+                        setIsClassSelected(true); // Indicate that a class is selected
                     } else {
-                        setIsClassSelected(false);
+                        setIsClassSelected(false); // No class assigned
                     }
 
-                    // Set the balance from Firestore if it exists
-                    setBalance(userData.balance || 0); // Default to 0 if balance is not found
+                    // Update balance state if it exists in Firestore, default to 0 if not
+                    setBalance(userData.balance || 0);
                 } else {
-                    setIsClassSelected(false);
+                    setIsClassSelected(false); // No user document exists
                 }
             };
 
-            fetchUserData();
+            fetchUserData(); // Call the function to fetch user data
         }
-    }, [user]); // Re-run this effect when user state changes
+    }, [user]); // Dependency array ensures this effect runs when 'user' changes
 
-    // Google Sign-In function
+    // Function to handle Google sign-in
     const signInWithGoogle = async () => {
         try {
-            const provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(auth, provider);
-            const loggedInUser = result.user;
+            const provider = new GoogleAuthProvider(); // Create a new Google auth provider instance
+            const result = await signInWithPopup(auth, provider); // Show Google sign-in popup
+            const loggedInUser = result.user; // Get user info from the result
 
-            setUser(loggedInUser);
+            setUser(loggedInUser); // Update user state with logged-in user details
 
-            // Check if user already has class info, if not, they will select a class
-            const userDocRef = doc(firestore, 'users', loggedInUser.uid);
-            const userDocSnap = await getDoc(userDocRef);
+            const userDocRef = doc(firestore, 'users', loggedInUser.uid); // Reference to user's Firestore document
+            const userDocSnap = await getDoc(userDocRef); // Fetch user document
 
-            if (!userDocSnap.exists()) {
-                // Set user data in Firestore if it's a new user
+            console.log("Login user", loggedInUser.uid); // Log the user ID
+            const my_user_id = loggedInUser.uid; // Store user ID in a local variable
+            console.log("My user id", my_user_id);
+
+            if (!userDocSnap.exists()) { // If user document does not exist
                 await setDoc(userDocRef, {
-                    displayName: loggedInUser.displayName,
-                    email: loggedInUser.email,
-                    class: '', // Initially no class selected
+                    displayName: loggedInUser.displayName, // Store user's display name
+                    email: loggedInUser.email, // Store user's email
+                    class: '', // Default to no class selected
                     balance: 0, // Default balance
-                });
+                }); // Create a new user document in Firestore
             }
         } catch (error) {
-            console.error("Error during Google login:", error);
+            console.error("Error during Google login:", error); // Log any errors during login
         }
     };
 
     return (
-    <Router>
-        <div className="app-container">
-            {user && isClassSelected && (
-                <nav className="navbar">
-                    <ul>
-                        <li>
-                            <Link to="/profile">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/shop">Shop</Link>
-                        </li>
-                    </ul>
-                </nav>
-            )}
-    <div className="app-body">
-
-                <h1 className="app-heading">Class Participation</h1>
-                <Routes>
-                    {/* Route for login */}
-                    <Route
-                        path="/"
-                        element={
-                            !user ? (
-                                <button className="sign-in-button" onClick={signInWithGoogle}>
-                                    Sign In with Google
-                                </button>
-                            ) : isClassSelected ? (
-                                <Navigate to="/profile" />
-                            ) : (
-                                <ClassSelection
-                                    user={user}
-                                    onClassSelected={(className) => {
-                                        setSelectedClass(className);
-                                        setIsClassSelected(true);
-                                    }}
-                                />
-                            )
-                        }
-                    />
-                    {/* Route for Profile Page */}
-                    <Route
-                        path="/profile"
-                        element={
-                            user && isClassSelected ? (
-                                <Profile user={user} selectedClass={selectedClass} balance={balance} />
-                            ) : (
-                                <Navigate to="/" />
-                            )
-                        }
-                    />
-                    <Route
-                        path="/shop"
-                        element={
-                            user && isClassSelected ? (
-                                <Shop user={user} balance={balance} />
-                            ) : (
-                                <Navigate to="/" />
-                            )
-                        }
-                    />
-                </Routes>
+        <Router> {/* Router component to handle navigation */}
+            <div className="app-container"> {/* Main container for the app */}
+                {user && isClassSelected && ( // Render navbar if user is logged in and has selected a class
+                    <nav className="navbar"> {/* Navigation bar */}
+                        <ul>
+                            <li>
+                                <Link to="/profile">Home</Link> {/* Link to profile page */}
+                            </li>
+                            <li>
+                                <Link to="/shop">Shop</Link> {/* Link to shop page */}
+                            </li>
+                        </ul>
+                    </nav>
+                )}
+                <div className="app-body"> {/* Main content area */}
+                    <h1 className="app-heading">Class Participation</h1> {/* Page heading */}
+                    <Routes> {/* Define routes for the application */}
+                        <Route
+                            path="/"
+                            element={
+                                !user ? ( // If no user is logged in
+                                    <button className="sign-in-button" onClick={signInWithGoogle}>
+                                        Sign In with Google
+                                    </button> // Show Google sign-in button
+                                ) : isClassSelected ? ( // If user is logged in and class is selected
+                                    <Navigate to="/profile" /> // Redirect to profile page
+                                ) : (
+                                    <ClassSelection
+                                        user={user}
+                                        onClassSelected={(className) => {
+                                            setSelectedClass(className); // Update selected class
+                                            setIsClassSelected(true); // Mark class as selected
+                                        }}
+                                    />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/profile"
+                            element={
+                                user && isClassSelected ? ( // If user is logged in and class is selected
+                                    <Profile user={user} selectedClass={selectedClass} balance={balance} />
+                                ) : (
+                                    <Navigate to="/" /> // Redirect to home if not
+                                )
+                            }
+                        />
+                        <Route
+                            path="/shop"
+                            element={
+                                user && isClassSelected ? ( // If user is logged in and class is selected
+                                    <Shop user={user} balance={balance}/>
+                                ) : (
+                                    <Navigate to="/" /> // Redirect to home if not
+                                )
+                            }
+                        />
+                    </Routes>
+                </div>
+                {/* Footer section */}
+                <footer className="app-footer">
+                    © 2025, Powered by Regis Hello Kitty
+                </footer>
             </div>
-            {/* Footer */}
-            <footer className="app-footer">
-                © 2025, Powered by Regis Hello Kitty
-            </footer>
-        </div>
-    </Router>
-);
-
+        </Router>
+    );
 }
 
+// Export the App component for use in other files
 export default App;
